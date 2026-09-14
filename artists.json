@@ -1,0 +1,25 @@
+\{
+  "bergënot": {
+    "name": "BERGËNOT",
+    "tags": ["tänzelcore", "keller synth"],
+    "cover": "img/bergenot.jpg",
+  },
+
+  "hexenmeister": {
+    "name": "HEXENMEISTER",
+    "tags": ["keller synth", "eastern europe"],
+    "cover": "img/hexenmeister.jpg",
+  },
+
+  "ruprecht4500": {
+    "name": "RUPRECHT 4500",
+    "tags": ["acid techno", "side project of Sigfrid"],
+    "cover": "img/ruprecht4500.jpg",
+  },
+
+  "carlosesmeralda": {
+    "name": "CARLOS ESMERALDA JALAPEÑO",
+    "tags": ["happy hardcore", "side project of Sigfrid"],
+    "cover": "img/carlosesmeralda.jpg",
+  }
+}

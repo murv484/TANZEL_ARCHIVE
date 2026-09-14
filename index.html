@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>𖤐⛈ TÄNZEL ARCHIVE ⛈𖤐</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cutive+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>𖤐⛈𓉢 TÄNZEL ARCHIVE 𓉢⛈𖤐</h1>
+    <p class="subtitle">tänzelcore · keller synth · basement frequencies</p>
+  </header>
+
+  <section class="carousel-wrap">
+    <button class="carousel-btn prev" id="prevBtn" aria-label="previous">‹</button>
+    <div class="carousel" id="carousel"></div>
+    <button class="carousel-btn next" id="nextBtn" aria-label="next">›</button>
+  </section>
+
+  <main id="main"></main>
+
+  <footer>
+    <p>☠ no algorithm · no platform · just files ☠</p>
+  </footer>
+
+  <script>
+    const ARTISTS = {
+      "bergenot": {
+        "name": "BERGËNOT",
+        "tags": ["tänzelcore", "keller synth"],
+        "cover": "bergenot.jpg",
+        "albums": [
+          {
+            "title": "Moselfrankian Tänzelcore Madness",
+            "year": "2016–2019",
+            "tracks": [
+              { "title": "Hexentanz", "atmosphere": "witches dancing in a wet cellar", "src": "" },
+              { "title": "Kellergeist", "atmosphere": "something breathing in the dark", "src": "" },
+              { "title": "Tanz der Besessenen", "atmosphere": "possessed bodies in the fog", "src": "" }
+            ]
+          }
+        ]
+      },
+      "hexenmeister": {
+        "name": "HEXENMEISTER",
+        "tags": ["keller synth", "eastern europe"],
+        "cover": "hexenmeister.jpg",
+        "albums": [
+          {
+            "title": "Pilzritual der Hexen",
+            "year": "2022",
+            "tracks": [
+              { "title": "Tänzelsession um Mitternacht", "atmosphere": "midnight ritual in the basement", "src": "" },
+              { "title": "Pilzritual", "atmosphere": "poisonous mushrooms glowing", "src": "" },
+              { "title": "Hexenkessel", "atmosphere": "boiling pot, green steam", "src": "" }
+            ]
+          }
+        ]
+      },
+      "ruprecht4500": {
+        "name": "RUPRECHT 4500",
+        "tags": ["acid techno", "side project of Sigfrid"],
+        "cover": "ruprecht4500.jpg",
+        "albums": [
+          {
+            "title": "Acid Basement Tapes",
+            "year": "2024",
+            "tracks": [
+              { "title": "4500", "atmosphere": "cold machine loop", "src": "" },
+              { "title": "Säure", "atmosphere": "acid burning the speakers", "src": "" }
+            ]
+          }
+        ]
+      },
+      "carlosesmeralda": {
+        "name": "CARLOS ESMERALDA JALAPEÑO",
+        "tags": ["happy hardcore", "side project of Sigfrid"],
+        "cover": "carlosesmeralda.jpg",
+        "albums": [
+          {
+            "title": "Spüre den Rausch der Jalapeños",
+            "year": "2025",
+            "tracks": [
+              { "title": "Spüre den Rausch", "atmosphere": "burning rave in a mexican desert", "src": "" },
+              { "title": "El Jalapeño", "atmosphere": "absurd german-mexican chaos", "src": "" }
+            ]
+          }
+        ]
+      }
+    };
+
+    const carousel = document.getElementById("carousel");
+    const main = document.getElementById("main");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    // Carousel
+    carousel.innerHTML = Object.entries(ARTISTS).map(([id, a]) => `
+      <div class="carousel-item" data-target="${id}">
+        <img src="${a.cover}" alt="${a.name}">
+        <span class="carousel-name">${a.name}</span>
+      </div>
+    `).join("");
+
+    // Artist sections
+    main.innerHTML = Object.entries(ARTISTS).map(([id, artist]) => `
+      <section class="artist" id="${id}">
+        <div class="artist-head">
+          <img class="artist-cover" src="${artist.cover}" alt="">
+          <div>
+            <h2 class="artist-name">${artist.name}</h2>
+            ${artist.tags ? `<p class="artist-tags">${artist.tags.join(" · ")}</p>` : ""}
+            <button class="toggle-btn" data-toggle="${id}">▶ open archive</button>
+          </div>
+        </div>
+
+        <div class="archive" id="archive-${id}">
+          ${artist.albums.map(album => `
+            <div class="album">
+              <h3>${album.title}${album.year ? ` <span class="year">(${album.year})</span>` : ""}</h3>
+              ${album.tracks.map(t => `
+                <div class="track">
+                  <span class="track-title">
+                    ${t.title}
+                    ${t.atmosphere ? `<span class="track-atmo">(${t.atmosphere})</span>` : ""}
+                  </span>
+                  ${t.src
+                    ? `<audio controls preload="none" src="${t.src}"></audio>`
+                    : `<span class="no-audio">— no file —</span>`}
+                </div>
+              `).join("")}
+            </div>
+          `).join("")}
+        </div>
+      </section>
+    `).join("");
+
+    // Click carousel item -> scroll to artist section
+    carousel.querySelectorAll(".carousel-item").forEach(item => {
+      item.addEventListener("click", () => {
+        const target = document.getElementById(item.dataset.target);
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // Toggle archive open/close
+    document.querySelectorAll(".toggle-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.toggle;
+        const archive = document.getElementById(`archive-${id}`);
+        const isOpen = archive.classList.toggle("open");
+        btn.textContent = isOpen ? "▼ close archive" : "▶ open archive";
+      });
+    });
+
+    // Carousel arrows
+    const scrollAmount = 260;
+    prevBtn.addEventListener("click", () => carousel.scrollBy({ left: -scrollAmount, behavior: "smooth" }));
+    nextBtn.addEventListener("click", () => carousel.scrollBy({ left: scrollAmount, behavior: "smooth" }));
+  </script>
+</body>
+</html>
